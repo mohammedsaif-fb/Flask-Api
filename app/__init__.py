@@ -19,73 +19,94 @@ def fish():
 @app.route('/stacks', methods=['GET'])
 def stack():
 
-    data = [{"stack_id": 7,
-             "location": "Chesterfield",
-             "latitude": 53.216888,
-             "longitude": -1.426285,
-             "status": "red"},
-
-            {"stack_id": 8,
+    data = [
+        {
+            "stack_id": 100010000000000,
+            "latitude": 53.30175,
+            "longitude": -1.13653,
+            "location": "Worksop England United Kingdom",
+            "status": "red"
+        },
+        {
+            "stack_id": 100310000000000,
+            "latitude": 51.671036,
+            "longitude": -0.30088,
+            "location": "Radlett England United Kingdom",
+            "status": "green"
+        },
+        {
+            "stack_id": 100310000000000,
+            "latitude": 51.85384,
+            "longitude": -0.374142,
+            "location": "Luton England United Kingdom",
+            "status": "red"
+        },
+        {
+            "stack_id": 100310000000000,
+            "latitude": 51.592701,
+            "longitude": -0.237055,
+            "location": "Hendon London England United Kingdom",
+            "status": "green"
+        },
+        {
+            "stack_id": 100310000000000,
+            "latitude": 51.613602,
+            "longitude": -0.249545,
+            "location": "Mill Hill London England�",
+            "status": "red"
+        },
+        {
+            "stack_id": 100310000000000,
+            "latitude": 52.133572,
+            "longitude": -0.475675,
+            "location": "Bedford",
+            "status": "green"
+        },
+        {
+            "stack_id": 100310000000000,
+            "latitude": 53.402557,
+            "longitude": -2.93572,
+            "location": "Picton Rd, Liverpool ",
+            "status": "red"
+        },
+        {
+            "stack_id": 140310000000000,
+            "latitude": 53.216908,
+            "longitude": -1.426562,
+            "location": "Chesterfield S40 2WL",
+            "status": "green"
+        },
+        {
+            "stack_id": 7,
+            "latitude": 53.216888,
+            "longitude": -1.426285,
+            "location": "Chesterfield",
+            "status": "red"
+        },
+        {
+            "stack_id": 8,
+            "latitude": 51.67107,
+            "longitude": -0.30095,
             "location": "London",
-             "latitude": 51.67107,
-             "longitude": -0.30095,
-             "status": "green"
-             },
-            {"stack_id": 8,
+            "status": "green"
+        },
+        {
+            "stack_id": 8,
+            "latitude": 55.67107,
+            "longitude": -0.30095,
             "location": "London",
-             "latitude": 55.67107,
-             "longitude": -0.30095,
-             "status": "amber"
-             },
-            {
-        "stack_id": 100010000000000,
-        "latitude": 53.30175,
-        "longitude": -1.13653
-    },
-        {
-        "stack_id": 100310000000001,
-        "latitude": 51.671036,
-        "longitude": -0.30088
-    },
-        {
-        "stack_id": 100310000000002,
-        "latitude": 51.85384,
-        "longitude": -0.374142
-    },
-        {
-        "stack_id": 100310000000003,
-        "latitude": 51.592701,
-        "longitude": -0.237055
-    },
-        {
-        "stack_id": 100310000000004,
-        "latitude": 51.613602,
-        "longitude": -0.249545
-    },
-        {
-        "stack_id": 100310000000005,
-        "latitude": 52.133572,
-        "longitude": -0.475675
-    },
-        {
-        "stack_id": 100310000000006,
-        "latitude": 53.402557,
-        "longitude": -2.93572
-    },
-        {
-        "stack_id": 140310000000000,
-        "latitude": 53.216908,
-        "longitude": -1.426562
-    }
+            "status": "red"
+        }
     ]
+
     return jsonify(data)
 
 
-@app.route('/stack/<id>/', methods=['GET'])
+@ app.route('/stack/<id>/', methods=['GET'])
 def stackmonitor(id):
 
     data = [{"stack_id": 7,
-             "location": "Chesterfield",
+            "location": "Chesterfield",
              "latitude": 53.216888,
              "longitude": -1.426285},
 
@@ -97,7 +118,7 @@ def stackmonitor(id):
     return jsonify(data)
 
 
-@app.route('/stackmonitor', methods=['GET'])
+@ app.route('/stackmonitor', methods=['GET'])
 def stackplot():
     data = [{"red_limit": 100,
             "amber_limit": 200,
@@ -106,18 +127,18 @@ def stackplot():
     return jsonify(data)
 
 
-@app.route('/stackadd/', methods=['POST'])
+@ app.route('/stackadd/', methods=['POST'])
 def stackaddition():
     email = request.json['email']
 
     return jsonify({"message": email+"2"})
 
 
-@app.route('/archive/stack/<id>/', methods=['GET', 'POST'])
+@ app.route('/archive/stack/<id>/', methods=['GET', 'POST'])
 def archived(id):
 
     data = [{"timestamp": 1661280790,
-             "stack_height": 1000,
+            "stack_height": 1000,
              "ambient_temperature": 23.5,
              "stack_height_forecast": 1000,
              "stack_temperature_forecast": 28
@@ -126,7 +147,7 @@ def archived(id):
     return jsonify(data)
 
 
-@app.errorhandler(404)
+@ app.errorhandler(404)
 def resource_not_found(e):
     return jsonify({
         "message": "The resource doesn't exist, Please check Again"
