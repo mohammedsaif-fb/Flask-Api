@@ -1,7 +1,7 @@
 import mysql.connector
 import json
 # Set the path to the CA certificate file
-ca_cert_path = 'ca-certificate.crt'
+ca_cert_path = 'app/ca-certificate.crt'
 MYSQL_HOST = "db-mysql-lon1-10668-do-user-8714569-0.b.db.ondigitalocean.com"
 MYSQL_USER = "doadmin"
 MYSQL_PASSWORD = "AVNS_yYlaUe6YWhbGhvki97L"
