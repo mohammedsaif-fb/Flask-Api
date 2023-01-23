@@ -6,7 +6,7 @@ MYSQL_HOST = "db-mysql-lon1-10668-do-user-8714569-0.b.db.ondigitalocean.com"
 MYSQL_USER = "doadmin"
 MYSQL_PASSWORD = "AVNS_yYlaUe6YWhbGhvki97L"
 MYSQL_DATABASE = "hastec_stacks"
-ca_cert_path = '/usr/src/app/ca-certificate.crt'
+ca_cert_path = 'ca-certificate.crt'
 # Connect to the MySQL server
 
 
