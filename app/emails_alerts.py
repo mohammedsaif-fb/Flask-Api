@@ -10,7 +10,7 @@ def send_alerts(message_content, reciepents):
     msg = MIMEMultipart()
     msg['From'] = username
     msg['Subject'] = 'New Stack Request'
-    table_html = f"""
+    table_html = """
 <table style="border-collapse: collapse; width: 100%;">
   <thead>
     <tr style="background-color: #f2f2f2;">
@@ -53,6 +53,6 @@ def send_alerts(message_content, reciepents):
     smtp.login(username, password)
 
 # Send the message
-    for recpeint in range(len(reciepents)):
-        smtp.sendmail(username, str(reciepents[recpeint]), msg.as_string())
+    for recipient in reciepents:
+        smtp.sendmail(username, str(recipient), msg.as_string())
     smtp.quit()
