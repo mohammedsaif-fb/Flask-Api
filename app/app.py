@@ -6,6 +6,8 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
+from emails_alerts import send_alerts
+from configs import email_list
 app = Flask(__name__)
 CORS(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
@@ -85,6 +87,7 @@ def home_kpi():
 def handle_addtion():
     data = request.json
     request_id = save_stack_data(data)
+    send_alerts(reciepents=email_list, message_content=data)
     response = {
         "req_id": request_id
     }
