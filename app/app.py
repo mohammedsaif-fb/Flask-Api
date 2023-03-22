@@ -51,7 +51,7 @@ def stack_info():
     return jsonify(response_stack)
 
 
-@app.route('/stackdata/')
+@app.route('/stackdatalegacy/')
 def stackdata():
     return jsonify(get_queries())
 
