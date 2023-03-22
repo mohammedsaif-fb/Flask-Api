@@ -5,7 +5,7 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
-from app.results import get_queries
+from app.results import get_queries, get_stack_id
 from app.stacks import save_stack_data
 from app.emails_alerts import send_alerts
 from app.configs import email_list
@@ -60,6 +60,11 @@ def stackdata():
 
     # Here you can pass any parameters you want.
     # It will not affect the application work.
+
+
+@app.route('/stackdata/<stack_id>')
+def stackdata_id(stack_id):
+    return jsonify(get_stack_id(stack_id))
 
 
 @app.route('/kpi')
