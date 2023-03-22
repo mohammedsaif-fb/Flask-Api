@@ -6,6 +6,8 @@ MYSQL_HOST = "db-mysql-lon1-10668-do-user-8714569-0.b.db.ondigitalocean.com"
 MYSQL_USER = "doadmin"
 MYSQL_PASSWORD = "AVNS_yYlaUe6YWhbGhvki97L"
 MYSQL_DATABASE = "hastec_evolved"
+MYSQL_DATABASE_LEGACY = "hastec_stacks"
+
 ca_cert_path = 'ca-certificate.crt'
 # Connect to the MySQL server
 
@@ -73,7 +75,7 @@ def get_queries():
         host=MYSQL_HOST,
         user=MYSQL_USER,
         password=MYSQL_PASSWORD,
-        database=MYSQL_DATABASE,
+        database=MYSQL_DATABASE_LEGACY,
         port=25060,
         ssl_ca=ca_cert_path,
 
