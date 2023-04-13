@@ -59,7 +59,7 @@ def broks_messages():
 
 @app.route('/stackdatalegacy/')
 def stackdata():
-    return jsonify(get_queries())
+    return get_queries()
 
     # Here you can pass any parameters you want.
     # It will not affect the application work.

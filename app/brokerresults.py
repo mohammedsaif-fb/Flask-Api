@@ -37,17 +37,18 @@ def get_broker_logs():
     topic = []
     message = []
     id = []
+    list_data = []
 
     while row is not None:
         timestamps.append(row[0])
         topic.append(row[1])
         message.append(row[2])
         id.append(row[3])
+        result_json = {"timestamps": row[0],
+                       "topic": row[1], "id": row[3], "message": row[2]}
+        list_data.append(result_json)
         row = cursor2.fetchone()
-
-    result_json = {"timestamps": timestamps,
-                   "topic": topic, "id": id, "message": message}
 
     cursor2.close()
     connection2.close()
-    return result_json
+    return list_data
