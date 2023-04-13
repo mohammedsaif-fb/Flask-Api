@@ -9,6 +9,7 @@ from app.results import get_queries, get_stack_id
 from app.stacks import save_stack_data
 from app.emails_alerts import send_alerts
 from app.configs import email_list
+from app.brokerresults import get_broker_logs
 
 app = Flask(__name__)
 CORS(app)
@@ -49,6 +50,11 @@ def stack_info():
         "allocated_stacks": allocated_stacks,
     }
     return jsonify(response_stack)
+
+
+@app.route('/brokerlogs/')
+def broks_messages():
+    return jsonify(get_broker_logs())
 
 
 @app.route('/stackdatalegacy/')
