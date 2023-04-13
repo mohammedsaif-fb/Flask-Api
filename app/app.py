@@ -54,12 +54,12 @@ def stack_info():
 
 @app.route('/brokerlogs/')
 def broks_messages():
-    return jsonify(get_broker_logs())
+    return get_broker_logs()
 
 
 @app.route('/stackdatalegacy/')
 def stackdata():
-    return get_queries()
+    return jsonify(get_queries())
 
     # Here you can pass any parameters you want.
     # It will not affect the application work.
