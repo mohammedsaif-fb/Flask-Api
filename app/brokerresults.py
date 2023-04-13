@@ -27,7 +27,7 @@ def get_broker_logs():
 # ...
     cursor2 = connection2.cursor()
 
-    query = ("SELECT timestamp as timestamp, topic as topic, message as message, id as id from broker_messages")
+    query = ("SELECT timestamp as timestamp, topic as topic, message as message, id as id from broker_messages ORDER BY timestamp desc")
 
     cursor2.execute(query)
 
