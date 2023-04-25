@@ -66,7 +66,7 @@ def get_queries():
                 if not result:
                     insert_query = "INSERT INTO stack_height (timestamp, stack_height, ambient_temp) VALUES (%s, %s, %s)"
                     values = [(payload[0]['TS'], stack_raw *
-                               0.022, payload[0]['VR'][6])]
+                               0.022, temperature/400)]
                     mycursor.executemany(insert_query, values)
                     connection1_ins.commit()
 
