@@ -10,7 +10,7 @@ from app.stacks import save_stack_data
 from app.emails_alerts import send_alerts
 from app.configs import email_list
 from app.brokerresults import get_broker_logs
-
+from app.tensorex_endpoints import get_battery_data, get_stack_height
 app = Flask(__name__)
 CORS(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
@@ -61,12 +61,6 @@ def broks_messages():
 def stackdata():
     return jsonify(get_queries())
 
-    # Here you can pass any parameters you want.
-    # It will not affect the application work.
-
-    # Here you can pass any parameters you want.
-    # It will not affect the application work.
-
 
 @app.route('/stackdata/<stack_id>')
 def stackdata_id(stack_id):
@@ -105,3 +99,13 @@ def handle_addtion():
         "req_id": request_id
     }
     return jsonify(response)
+
+
+@app.route('/tensorexheight', methods=['GET'])
+def getheight():
+    return jsonify(get_stack_height())
+
+
+@app.route('/tensorexbattey', methods=['GET'])
+def getbatery():
+    return jsonify(get_battery_data())
