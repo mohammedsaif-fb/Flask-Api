@@ -1,9 +1,9 @@
 import json
 import mysql.connector
-# Set the path to the CA certificate file
-
 import schedule
 import time
+import cProfile
+
 
 MYSQL_HOST = "db-mysql-lon1-10668-do-user-8714569-0.b.db.ondigitalocean.com"
 MYSQL_USER = "doadmin"
@@ -34,19 +34,12 @@ def get_queries():
         ssl_ca=ca_cert_path,
 
     )
-
-# Do something with the connection
-# ...
-
     mycursor = connection1_ins.cursor()
-
     cursor2 = connection2.cursor()
 
     query = (
         "SELECT timestamp as timestamp, topic as topic, message as message from broker_messages")
-
     cursor2.execute(query)
-
     row = cursor2.fetchone()
     while row is not None:
         # insert stack height,timestamp
@@ -56,8 +49,7 @@ def get_queries():
             if len(payload[0]['VR']) == 8:
                 stack_raw = payload[0]['VR'][1]
                 temperature = payload[0]['VR'][6]
-                print("stack data", stack_raw*0.022,
-                      temperature, payload[0]['TS'])
+                # print("stack data", stack_raw*0.022, temperature, payload[0]['TS'])
                 mycursor = connection1_ins.cursor()
                 check_query = "SELECT * FROM stack_height WHERE timestamp = %s"
                 check_values = [(payload[0]['TS'])]
@@ -75,12 +67,8 @@ def get_queries():
         if row[1] == 'tensorx_frag2':
             payload = json.loads((row[2]))
             if len(payload[0]['VR']) == 2:
-                latitude = payload[0]['VR'][0]
-                longitude = payload[0]['VR'][1]
-                print("location ", latitude, longitude, payload[0]['TS'])
+                # print("location ", latitude, longitude, payload[0]['TS'])
                 mycursor = connection1_ins.cursor()
-              #  delete_query = "DELETE FROM location_data"
-              #  mycursor.execute(delete_query)
                 check_query = "SELECT * FROM location_data WHERE timestamp = %s"
                 check_values = [(payload[0]['TS'])]
                 mycursor.execute(check_query, check_values)
@@ -98,11 +86,8 @@ def get_queries():
             if len(payload[0]['VR']) == 1:
                 battery_voltage = payload[0]['VR']
                 if battery_voltage[0] > 20000:
-                    print("battery voltage",
-                          battery_voltage[0]/1000, payload[0]['TS'])
+                    # print("battery voltage",battery_voltage[0]/1000, payload[0]['TS'])
                     mycursor = connection1_ins.cursor()
-                   # delete_query = "DELETE FROM battery_data"
-                   # mycursor.execute(delete_query)
                     check_query = "SELECT * FROM battery_data WHERE timestamp = %s"
                     check_values = [(payload[0]['TS'])]
                     mycursor.execute(check_query, check_values)
@@ -120,7 +105,7 @@ def get_queries():
     connection2.close()
 
 
-schedule.every(2).minutes.do(get_queries)
+schedule.every(1).seconds.do(get_queries)
 while True:
     schedule.run_pending()
-    time.sleep(1)
+    time.sleep(0.1)

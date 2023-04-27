@@ -10,6 +10,58 @@ ca_cert_path = 'ca-certificate.crt'
 # Connect to the MySQL server
 
 
+def get_optimised():
+    connection2 = mysql.connector.connect(
+        host=MYSQL_HOST,
+        user=MYSQL_USER,
+        password=MYSQL_PASSWORD,
+        database="optimised_store",
+        port=25060,
+        ssl_ca=ca_cert_path,)
+
+    cursor2 = connection2.cursor()
+
+    query = ("SELECT tsh.timestamp as timestamp, stack_height as stack_height , ambient_temp as temp, battery_voltage as battery_voltage FROM tensorex_stack_heights tsh INNER JOIN tensorex_locations tl ON tsh.stack_id = tl.stack_id INNER JOIN tensorex_battery tb  ON tsh.stack_id = tb.stack_id WHERE tsh .stack_id = 987654321")
+    cursor2.execute(query)
+
+    row = cursor2.fetchone()
+
+    timestamps = []
+    stack_heights = []
+    temperatures = []
+    battery_voltages = []
+
+    while row is not None:
+        timestamps.append(row[0]*1000)
+        stack_heights.append(row[1])
+        temperatures.append(row[2])
+        battery_voltages.append(row[3])
+        row = cursor2.fetchone()
+
+    result_json = {
+        "timestamps": timestamps,
+        "dataseries": [{
+            "name": "Stack Heights",
+            "data": stack_heights,
+        },
+            {
+            "name": "Ambient Temperature",
+            "data": temperatures,
+        },
+            {
+                "name": "Battery Voltage",
+                "data": battery_voltages,
+        }
+
+        ]
+    }
+# Close the cursor and connection
+    cursor2.close()
+    connection2.close()
+
+    return result_json
+
+
 def get_stack_height():
     connection2 = mysql.connector.connect(
         host=MYSQL_HOST,
@@ -17,9 +69,7 @@ def get_stack_height():
         password=MYSQL_PASSWORD,
         database=MYSQL_DATABASE,
         port=25060,
-        ssl_ca=ca_cert_path,
-
-    )
+        ssl_ca=ca_cert_path,)
 
 # Do something with the connection
 # ...
@@ -49,7 +99,8 @@ def get_stack_height():
             {
             "name": "Ambient Temperature",
             "data": temperatures,
-        }
+        },
+
         ]
     }
 # Close the cursor and connection

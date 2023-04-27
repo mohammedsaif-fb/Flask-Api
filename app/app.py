@@ -1,22 +1,16 @@
 from flask_cors import CORS
 from flask import Flask, jsonify, request
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
-from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from app.results import get_queries, get_stack_id
 from app.stacks import save_stack_data
 from app.emails_alerts import send_alerts
 from app.configs import email_list
 from app.brokerresults import get_broker_logs
-from app.tensorex_endpoints import get_battery_data, get_stack_height
+from app.tensorex_endpoints import get_battery_data, get_stack_height, get_optimised
 app = Flask(__name__)
 CORS(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 app.config["JWT_ALGORITHM"] = "HS256"
-
-jwt = JWTManager(app)
 
 app.config["JWT_ALGORITHM"] = "HS256"
 app.config["SECRET_KEY"] = "IUGYGFYR456547E47636RDNGTXSDR"
@@ -24,13 +18,7 @@ app.config["SECRET_KEY"] = "IUGYGFYR456547E47636RDNGTXSDR"
 
 @app.route("/login", methods=["POST"])
 def login():
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
-    if username != "test" or password != "test":
-        return jsonify({"msg": "Bad username or password"}), 401
-
-    access_token = create_access_token(identity=username)
-    return jsonify(access_token=access_token)
+    print("hello")
 
 
 @app.errorhandler(404)
@@ -109,3 +97,8 @@ def getheight():
 @app.route('/tensorexbattey', methods=['GET'])
 def getbatery():
     return jsonify(get_battery_data())
+
+
+@app.route('/tensorex', methods=['GET'])
+def getoptim():
+    return jsonify(get_optimised())
