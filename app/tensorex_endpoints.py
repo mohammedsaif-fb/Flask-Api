@@ -67,7 +67,7 @@ def get_stack_height():
         host=MYSQL_HOST,
         user=MYSQL_USER,
         password=MYSQL_PASSWORD,
-        database=MYSQL_DATABASE,
+        database='optimised_store',
         port=25060,
         ssl_ca=ca_cert_path,)
 
@@ -75,7 +75,7 @@ def get_stack_height():
 # ...
     cursor2 = connection2.cursor()
 
-    query = ("SELECT timestamp as timestamp, stack_height as stack_height, ambient_temp as temps from stack_height order by timestamp desc ")
+    query = ("SELECT timestamp as timestamp, stack_height as stack_height, ambient_temp as temps from tensorex_stack_heights order by timestamp desc ")
     cursor2.execute(query)
 
     row = cursor2.fetchone()
@@ -115,7 +115,7 @@ def get_battery_data():
         host=MYSQL_HOST,
         user=MYSQL_USER,
         password=MYSQL_PASSWORD,
-        database=MYSQL_DATABASE,
+        database='optimised_store',
         port=25060,
         ssl_ca=ca_cert_path,
 
@@ -126,7 +126,7 @@ def get_battery_data():
     cursor2 = connection2.cursor()
 
     query = (
-        "SELECT timestamp as timestamp,  voltage as battery_Voltage from battery_data ORDER BY timestamp DESC")
+        "SELECT timestamp as timestamp, voltage as battery_Voltage from tensorex_battery ORDER BY timestamp DESC")
     cursor2.execute(query)
 
     row = cursor2.fetchone()
