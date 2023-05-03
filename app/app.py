@@ -5,7 +5,7 @@ from app.stacks import save_stack_data
 from app.emails_alerts import send_alerts
 from app.configs import email_list
 from app.brokerresults import get_broker_logs
-from app.tensorex_endpoints import get_battery_data, get_stack_height, get_optimised
+from app.tensorex_endpoints import get_battery_data, get_stack_height
 
 
 app = Flask(__name__)
