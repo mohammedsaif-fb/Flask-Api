@@ -130,6 +130,3 @@ def get_queries():
     connection2.close()
 
     return result_json
-
-
-print(get_stack_id(126789))
