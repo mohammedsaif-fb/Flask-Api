@@ -100,8 +100,3 @@ def getheight():
 @app.route('/tensorexbattey', methods=['GET'])
 def getbatery():
     return jsonify(get_battery_data())
-
-
-@app.route('/tensorex', methods=['GET'])
-def getoptim():
-    return jsonify(get_optimised())
