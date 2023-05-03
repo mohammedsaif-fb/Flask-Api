@@ -65,7 +65,7 @@ def get_battery_data():
         host=MYSQL_HOST,
         user=MYSQL_USER,
         password=MYSQL_PASSWORD,
-        database='optimised_store',
+        database='tensorex_demo',
         port=25060,
         ssl_ca=ca_cert_path,
 
