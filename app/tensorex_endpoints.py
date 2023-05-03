@@ -76,7 +76,7 @@ def get_battery_data():
     cursor2 = connection2.cursor()
 
     query = (
-        "SELECT timestamp as timestamp, battery_voltage as battery_Voltage from tensorex_battery ORDER BY timestamp DESC")
+        "SELECT timestamp as timestamp, battery_voltage as battery_Voltage from battery_data ORDER BY timestamp DESC")
     cursor2.execute(query)
 
     row = cursor2.fetchone()
