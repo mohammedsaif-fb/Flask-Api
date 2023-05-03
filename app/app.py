@@ -1,6 +1,5 @@
 from flask_cors import CORS
-from flask import Flask, jsonify, request
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, jsonify, request, send_from_directory
 from app.results import get_queries, get_stack_id
 from app.stacks import save_stack_data
 from app.emails_alerts import send_alerts
@@ -14,6 +13,18 @@ app.config["JWT_ALGORITHM"] = "HS256"
 
 app.config["JWT_ALGORITHM"] = "HS256"
 app.config["SECRET_KEY"] = "IUGYGFYR456547E47636RDNGTXSDR"
+
+
+@app.route('/')
+def index():
+    return send_from_directory('static', 'index.html')
+
+# Serve all other static files
+
+
+@app.route('/<path:path>')
+def static_file(path):
+    return send_from_directory('static', path)
 
 
 @app.route("/login", methods=["POST"])

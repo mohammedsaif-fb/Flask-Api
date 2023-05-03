@@ -1,4 +1,3 @@
-import json
 import mysql.connector
 # Set the path to the CA certificate file
 
@@ -27,7 +26,14 @@ def get_broker_logs():
 # ...
     cursor2 = connection2.cursor()
 
-    query = ("SELECT timestamp as timestamp, topic as topic, message as message, id as id from broker_messages ORDER BY timestamp desc")
+    query = (
+        "SELECT timestamp as timestamp, "
+        "topic as topic, "
+        "message as message, "
+        "id as id "
+        "FROM broker_messages "
+        "ORDER BY timestamp DESC"
+    )
 
     cursor2.execute(query)
 

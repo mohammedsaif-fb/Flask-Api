@@ -2,7 +2,7 @@ import json
 import mysql.connector
 import schedule
 import time
-import cProfile
+import datetime
 
 
 MYSQL_HOST = "db-mysql-lon1-10668-do-user-8714569-0.b.db.ondigitalocean.com"
@@ -11,7 +11,7 @@ MYSQL_PASSWORD = "AVNS_yYlaUe6YWhbGhvki97L"
 MYSQL_DATABASE = "tensorex_demo"
 MYSQL_DATABASE_LEGACY = "broker_dump"
 
-ca_cert_path = 'ca-certificate.crt'
+CA_CERT_PATH = 'ca-certificate.crt'
 # Connect to the MySQL server
 
 
@@ -22,7 +22,7 @@ def get_queries():
         password=MYSQL_PASSWORD,
         database=MYSQL_DATABASE_LEGACY,
         port=25060,
-        ssl_ca=ca_cert_path,
+        ssl_ca=CA_CERT_PATH,
 
     )
     connection1_ins = mysql.connector.connect(
@@ -31,14 +31,17 @@ def get_queries():
         password=MYSQL_PASSWORD,
         database=MYSQL_DATABASE,
         port=25060,
-        ssl_ca=ca_cert_path,
+        ssl_ca=CA_CERT_PATH,
 
     )
     mycursor = connection1_ins.cursor()
     cursor2 = connection2.cursor()
 
     query = (
-        "SELECT timestamp as timestamp, topic as topic, message as message from broker_messages")
+        "SELECT timestamp as timestamp, topic as topic, message as message from "
+        "broker_messages")
+
+   # query = "SELECT timestamp, topic, message FROM broker_messages USE INDEX (idx_broker_messages_timestamp)"
     cursor2.execute(query)
     row = cursor2.fetchone()
     while row is not None:
@@ -49,52 +52,56 @@ def get_queries():
             if len(payload[0]['VR']) == 8:
                 stack_raw = payload[0]['VR'][1]
                 temperature = payload[0]['VR'][6]
-                # print("stack data", stack_raw*0.022, temperature, payload[0]['TS'])
+                # print("stack data", stack_raw*0.022, temperature, int(time.time()))
                 mycursor = connection1_ins.cursor()
                 check_query = "SELECT * FROM stack_height WHERE timestamp = %s"
-                check_values = [(payload[0]['TS'])]
+                check_values = [(int(time.time()))]
                 mycursor.execute(check_query, check_values)
                 result = mycursor.fetchone()
                 if not result:
-                    insert_query = "INSERT INTO stack_height (timestamp, stack_height, ambient_temp) VALUES (%s, %s, %s)"
-                    values = [(payload[0]['TS'], stack_raw *
-                               0.022, temperature/400)]
-                    mycursor.executemany(insert_query, values)
-                    connection1_ins.commit()
+                    try:
+                        insert_query = "INSERT INTO stack_height (timestamp, stack_height, ambient_temp) VALUES (%s, %s, %s)"
+                        values = [(int(time.time()), stack_raw *
+                                   0.022, temperature/400)]
+                        mycursor.executemany(insert_query, values)
+                        connection1_ins.commit()
+                    except Exception as e:
+                        print(f"An error occurred: {e}")
 
         # insert stack latitude,longitude,timestamp
-
+        '''
         if row[1] == 'tensorx_frag2':
             payload = json.loads((row[2]))
             if len(payload[0]['VR']) == 2:
-                # print("location ", latitude, longitude, payload[0]['TS'])
+                # print("location ", latitude, longitude, int(time.time()))
                 mycursor = connection1_ins.cursor()
                 check_query = "SELECT * FROM location_data WHERE timestamp = %s"
-                check_values = [(payload[0]['TS'])]
+                check_values = [(int(time.time()))]
                 mycursor.execute(check_query, check_values)
                 result = mycursor.fetchone()
                 if not result:
-                    insert_query = "INSERT INTO location_data (timestamp, lat, longitude) VALUES (%s, %s, %s)"
-                    values = [(payload[0]['TS'], payload[0]
+                    insert_query = "INSERT INTO location_data ",
+                    "(timestamp, lat, longitude) VALUES (%s, %s, %s)"
+                    values = [(int(time.time()), payload[0]
                                ['VR'][0], payload[0]['VR'][1])]
                     mycursor.executemany(insert_query, values)
                     connection1_ins.commit()
-
+'''
  # insert battery,timestamp
         if row[1] == 'tensorx_frag2':
             payload = json.loads((row[2]))
             if len(payload[0]['VR']) == 1:
                 battery_voltage = payload[0]['VR']
                 if battery_voltage[0] > 20000:
-                    # print("battery voltage",battery_voltage[0]/1000, payload[0]['TS'])
+                    # print("battery voltage",battery_voltage[0]/1000, int(time.time()))
                     mycursor = connection1_ins.cursor()
                     check_query = "SELECT * FROM battery_data WHERE timestamp = %s"
-                    check_values = [(payload[0]['TS'])]
+                    check_values = [int(time.time())]
                     mycursor.execute(check_query, check_values)
                     result = mycursor.fetchone()
                     if not result:
                         insert_query = "INSERT INTO battery_data (timestamp, voltage) VALUES (%s, %s)"
-                        values = [(payload[0]['TS'], battery_voltage[0]/1000)]
+                        values = [(int(time.time()), battery_voltage[0]/1000)]
                         mycursor.executemany(insert_query, values)
                         connection1_ins.commit()
 

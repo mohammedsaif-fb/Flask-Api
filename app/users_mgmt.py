@@ -1,4 +1,3 @@
-import json
 import mysql.connector
 # Set the path to the CA certificate file
 
@@ -68,6 +67,3 @@ def check_login(username, hashed_password):
     connection2.close()
 
     return result_json
-
-
-print(get_stack_id(126789))

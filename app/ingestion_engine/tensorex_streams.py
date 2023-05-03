@@ -34,7 +34,7 @@ def on_message(client, userdata, msg):
     datapoint_index = str(uuid.uuid1())[:8]
     if topic == 'tensorx_frag2':
         payload = json.loads((m_decode))
-        timestamp = payload[0]['TS']
+        payload[0]['TS']
         stack_id = payload[0]['ID']
         if len(payload[0]['VR']) == 2:
             latitude = payload[0]['VR'][0]
@@ -60,7 +60,7 @@ def on_message(client, userdata, msg):
         if len(payload[0]['VR']) == 8:
             stack_raw = payload[0]['VR'][1]*0.022
             temperature = payload[0]['VR'][6]/400
-            timestamp = payload[0]['TS']
+            payload[0]['TS']
         insert_query = "INSERT INTO tensorex_stack_heights(timestamp,stack_height,ambient_temp,stack_id,datapoint_index) VALUES (%s, %s, %s, %s,%s)"
         values = [(payload[0]['TS'], stack_raw,
                    temperature,

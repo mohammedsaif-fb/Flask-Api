@@ -1,4 +1,3 @@
-import json
 import mysql.connector
 # Set the path to the CA certificate file
 

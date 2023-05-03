@@ -1,4 +1,3 @@
-import json
 import mysql.connector
 # Set the path to the CA certificate file
 
@@ -27,7 +26,12 @@ def get_stack_id(stack_id):
 # ...
     cursor2 = connection2.cursor()
 
-    query = ("SELECT timestamp as timestamp, stack_height as stack_height, battery_voltage as battery_Voltage, ambient_temp as Ambient_Temperature from hastec_balance_weights where stack_id = {} ORDER BY timestamp DESC").format(stack_id)
+    query = ("SELECT timestamp as timestamp,"
+             "stack_height as stack_height,"
+             "battery_voltage as battery_Voltage,"
+             "ambient_temp as Ambient_Temperature,"
+             "from hastec_balance_weights where stack_id = {},"
+             "ORDER BY timestamp DESC").format(stack_id)
 
     cursor2.execute(query)
 
