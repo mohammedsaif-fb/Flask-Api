@@ -74,7 +74,7 @@ def get_stack_height():
 # ...
     cursor2 = connection2.cursor()
 
-    query = ("SELECT timestamp as timestamp, stack_height as stack_height, ambient_temp as temps from tensorex_stack_heights order by timestamp desc ")
+    query = ("SELECT timestamp as timestamp, stack_height as stack_height, ambient_temp as temps from stack_height sh  WHERE timestamp > 1683126463  order by timestamp desc")
     cursor2.execute(query)
 
     row = cursor2.fetchone()
