@@ -1,13 +1,17 @@
 from flask_cors import CORS
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from app.results import get_queries, get_stack_id
 from app.stacks import save_stack_data
 from app.emails_alerts import send_alerts
 from app.configs import email_list
 from app.brokerresults import get_broker_logs
 from app.tensorex_endpoints import get_battery_data, get_stack_height, get_optimised
+
+
 app = Flask(__name__)
 CORS(app)
+
+
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 app.config["JWT_ALGORITHM"] = "HS256"
 
