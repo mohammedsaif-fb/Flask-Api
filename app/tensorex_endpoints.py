@@ -24,7 +24,7 @@ def get_stack_height():
 
     query = "SELECT FROM_UNIXTIME(timestamp) AS timestamp, stack_height, ambient_temp " \
         "FROM stack_height " \
-        "WHERE timestamp >= UNIX_TIMESTAMP(NOW() - INTERVAL 5 MINUTE) ORDER BY timestamp DESC"
+        "WHERE timestamp >= UNIX_TIMESTAMP(NOW() - INTERVAL 20 MINUTE) ORDER BY timestamp DESC"
 
     cursor2.execute(query)
 
@@ -78,7 +78,7 @@ def get_battery_data():
     cursor2 = connection2.cursor()
 
     query = (
-        "SELECT timestamp as timestamp, voltage as voltage from battery_data WHERE timestamp >= UNIX_TIMESTAMP(NOW() - INTERVAL 5 MINUTE) ORDER BY timestamp DESC")  # noqa: E501
+        "SELECT timestamp as timestamp, voltage as voltage from battery_data WHERE timestamp >= UNIX_TIMESTAMP(NOW() - INTERVAL 20 MINUTE) ORDER BY timestamp DESC")  # noqa: E501
     cursor2.execute(query)
 
     row = cursor2.fetchone()
