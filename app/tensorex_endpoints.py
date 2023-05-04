@@ -22,9 +22,9 @@ def get_stack_height():
 # ...
     cursor2 = connection2.cursor()
 
-    query = ("SELECT FROM_UNIXTIME(timestamp) AS timestamp, stack_height, ambient_temp"
-             "FROM stack_height"
-             "WHERE timestamp >= UNIX_TIMESTAMP(NOW() - INTERVAL 5 MINUTE)")
+    query = "SELECT FROM_UNIXTIME(timestamp) AS timestamp, stack_height, ambient_temp " \
+        "FROM stack_height " \
+        "WHERE timestamp >= UNIX_TIMESTAMP(NOW() - INTERVAL 5 MINUTE)"
 
     cursor2.execute(query)
 
@@ -35,7 +35,9 @@ def get_stack_height():
     temperatures = []
 
     while row is not None:
-        timestamps.append(row[0]*1000)
+        now = row[0]
+        timestamp_ = int(now.timestamp())
+        timestamps.append(timestamp_*1000)
         stack_heights.append(row[1])
         temperatures.append(row[2])
         row = cursor2.fetchone()
@@ -76,7 +78,7 @@ def get_battery_data():
     cursor2 = connection2.cursor()
 
     query = (
-        "SELECT timestamp as timestamp, voltage as voltage from battery_data ORDER BY timestamp DESC")
+        "SELECT timestamp as timestamp, voltage as voltage from battery_data ORDER BY timestamp DESC")  # noqa: E501
     cursor2.execute(query)
 
     row = cursor2.fetchone()
