@@ -41,7 +41,6 @@ def get_queries():
         "SELECT timestamp as timestamp, topic as topic, message as message from "
         "broker_messages")
 
-   # query = "SELECT timestamp, topic, message FROM broker_messages USE INDEX (idx_broker_messages_timestamp)"
     cursor2.execute(query)
     row = cursor2.fetchone()
     while row is not None:
@@ -52,7 +51,8 @@ def get_queries():
             if len(payload[0]['VR']) == 8:
                 stack_raw = payload[0]['VR'][1]
                 temperature = payload[0]['VR'][6]
-                # print("stack data", stack_raw*0.022, temperature, int(time.time()))
+                temperature = temperature/400
+                temperature_ = round(temperature, 2)
                 mycursor = connection1_ins.cursor()
                 check_query = "SELECT * FROM stack_height WHERE timestamp = %s"
                 check_values = [(int(time.time()))]
@@ -60,9 +60,9 @@ def get_queries():
                 result = mycursor.fetchone()
                 if not result:
                     try:
-                        insert_query = "INSERT INTO stack_height (timestamp, stack_height, ambient_temp) VALUES (%s, %s, %s)"
-                        values = [(int(time.time()), stack_raw *
-                                   0.022, temperature/400)]
+                        insert_query = "INSERT INTO stack_height (timestamp, stack_height) VALUES (%s, %s)"
+                        values = [
+                            (int(time.time()), "{:.2f}".format(stack_raw * 0.022))]
                         mycursor.executemany(insert_query, values)
                         connection1_ins.commit()
                     except Exception as e:
@@ -101,7 +101,8 @@ def get_queries():
                     result = mycursor.fetchone()
                     if not result:
                         insert_query = "INSERT INTO battery_data (timestamp, voltage) VALUES (%s, %s)"
-                        values = [(int(time.time()), battery_voltage[0]/1000)]
+                        values = [
+                            (int(time.time()), "{:.2f}".format(battery_voltage[0]/1000))]
                         mycursor.executemany(insert_query, values)
                         connection1_ins.commit()
 
@@ -113,6 +114,9 @@ def get_queries():
 
 
 schedule.every(1).seconds.do(get_queries)
+
 while True:
     schedule.run_pending()
     time.sleep(0.1)
+
+print(schedule.get_jobs())
