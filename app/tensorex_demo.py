@@ -55,7 +55,7 @@ def get_queries():
                 temperature_ = round(temperature, 2)
                 mycursor = connection1_ins.cursor()
                 check_query = "SELECT * FROM stack_height WHERE timestamp = %s"
-                check_values = [(int(time.time()))]
+                check_values = [(payload[0]['TS'])]
                 mycursor.execute(check_query, check_values)
                 result = mycursor.fetchone()
                 if not result:
@@ -96,13 +96,13 @@ def get_queries():
                     # print("battery voltage",battery_voltage[0]/1000, int(time.time()))
                     mycursor = connection1_ins.cursor()
                     check_query = "SELECT * FROM battery_data WHERE timestamp = %s"
-                    check_values = [int(time.time())]
+                    check_values = [(payload[0]['TS'])]
                     mycursor.execute(check_query, check_values)
                     result = mycursor.fetchone()
                     if not result:
                         insert_query = "INSERT INTO battery_data (timestamp, voltage) VALUES (%s, %s)"
                         values = [
-                            (int(time.time()), "{:.2f}".format(battery_voltage[0]/1000))]
+                            (payload[0]['TS'], "{:.2f}".format(battery_voltage[0]/1000))]
                         mycursor.executemany(insert_query, values)
                         connection1_ins.commit()
 

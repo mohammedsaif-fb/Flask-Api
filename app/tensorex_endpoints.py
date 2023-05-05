@@ -36,8 +36,8 @@ def get_stack_height():
 
     while row is not None:
         now = row[0]
-        timestamp_ = int(now.timestamp())
-        timestamps.append(timestamp_*1000)
+        timestamp_ = int(now.timestamp()) - 3600
+        timestamps.append(timestamp_)
         stack_heights.append(row[1])
         temperatures.append(row[2])
         row = cursor2.fetchone()
