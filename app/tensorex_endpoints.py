@@ -88,7 +88,9 @@ def get_battery_data():
     battery_voltages = []
 
     while row is not None:
-        timestamps.append(row[0]*1000)
+        now = row[0]
+        timestamp_ = int(now.timestamp()) - 3600
+        timestamps.append(timestamp_)
         battery_voltages.append(row[1])
         row = cursor2.fetchone()
 
