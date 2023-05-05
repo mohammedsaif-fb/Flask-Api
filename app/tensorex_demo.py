@@ -60,9 +60,9 @@ def get_queries():
                 result = mycursor.fetchone()
                 if not result:
                     try:
-                        insert_query = "INSERT INTO stack_height (timestamp, stack_height) VALUES (%s, %s)"
+                        insert_query = "INSERT INTO stack_height (timestamp, stack_height,ambient_temp) VALUES (%s, %s,%s)"
                         values = [
-                            (int(time.time()), "{:.2f}".format(stack_raw * 0.022))]
+                            (int(time.time()), "{:.2f}".format(stack_raw * 0.022), temperature_)]
                         mycursor.executemany(insert_query, values)
                         connection1_ins.commit()
                     except Exception as e:

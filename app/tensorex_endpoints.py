@@ -39,7 +39,7 @@ def get_stack_height():
         timestamp_ = int(now.timestamp())
         timestamps.append(timestamp_*1000)
         stack_heights.append(row[1])
-        temperatures.append(round(float(row[2]),2))
+        temperatures.append(row[2])
         row = cursor2.fetchone()
 
     result_json = {
