@@ -23,8 +23,8 @@ def get_stack_height():
     cursor2 = connection2.cursor()
 
     query = "SELECT FROM_UNIXTIME(timestamp) AS timestamp, stack_height, ambient_temp " \
-        "FROM stack_height " \
-        "WHERE timestamp >= UNIX_TIMESTAMP(NOW() - INTERVAL 20 MINUTE) ORDER BY timestamp DESC"
+        "FROM stack_height ORDER BY timestamp DESC" \
+        #"WHERE timestamp >= UNIX_TIMESTAMP(NOW() - INTERVAL 20 MINUTE) ORDER BY timestamp DESC"
 
     cursor2.execute(query)
 
