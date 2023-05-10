@@ -4,6 +4,7 @@ import json
 import schedule
 import time
 import ast
+import uuid
 
 MYSQL_HOST = "db-mysql-lon1-10668-do-user-8714569-0.b.db.ondigitalocean.com"
 MYSQL_USER = "doadmin"
@@ -40,40 +41,43 @@ def get_data():
         # execute a SELECT query to fetch all rows from the broker_messages table
         query = "SELECT * FROM broker_messages"
         cursor.execute(query)
-        rows = cursor.fetchall()
-
-        
-        for row in rows:
+        row = cursor.fetchone()
+        while row is not None:
             if row[1] == 'tensorx_frag1':
                 current_row = row[2]
                 payload = ast.literal_eval(current_row)
-                print("payload",payload)
-                if isinstance(payload, bytes):
-                     print("bytes")
-                     exit
+                if isinstance(payload,bytes) == 1:
+                    print(payload,type(payload))
+                    string = payload.decode('utf-8')
+                    lst = ast.literal_eval(string)
+                    timestamp = lst[0]['TS']
+                    check_query = "SELECT * FROM stack_height WHERE timestamp = %s"
+                    check_values = [(payload[0]['TS'])]
+                    secondary_payload = ast.literal_eval(payload[0]['VR'])
+                    stack_raw = secondary_payload[1]
+                    stack_raw = stack_raw * 0.022
+                    stack_height = round(stack_raw,2)
+                    temperature = int(secondary_payload[7])
+                    temperature = int(temperature/400)
+                    ambient_temperature = round(temperature, 2)
+                    print(timestamp,stack_raw,temperature)
+                    device_cursor.execute(check_query, check_values)
+                    result = device_cursor.fetchall()
+                    for row in result:
+                          try:
+                            insert_query = ("INSERT INTO tensorex_devices "
+                    "(stack_height, device_datapoint, device_id, timestamp, ambient_temperature) "
+                    "VALUES (%s, %s, %s, %s, %s)")
+                            values = (stack_height, datapoint_id, stack_id, timestamp, ambient_temperature)
+                            cursor.execute(insert_query, values)
+                            connection.commit()
+                          except Exception as e:
+                            print(f"An error occurred: {e}")
                 
-                timestamps = payload[0]['TS']
-                print(timestamps)
-                check_query = "SELECT * FROM stack_height WHERE timestamp = %s"
-                check_values = [(payload[0]['TS'])]
-                secondary_payload = ast.literal_eval(payload[0]['VR'])
-                stack_raw = secondary_payload[1]
-                temperature = int(secondary_payload[7])
-                temperature = int(temperature/400)
-                temperature_ = round(temperature, 2)
-                print(timestamps,stack_raw,temperature)
-                device_cursor.execute(check_query, check_values)
-                result = device_cursor.fetchall()
-                for row in result:
-                    try:
-                        insert_query = "INSERT INTO stack_height (timestamp, stack_height,ambient_temp) VALUES (%s, %s,%s)"
-                        values = [
-                            (timestamps, "{:.2f}".format(stack_raw * 0.022), temperature)]
-                        device_cursor.executemany(insert_query, values)
-                        device_connection.commit()
-                    except Exception as e:
-                        print(f"An error occurred: {e}")
-                    
+
+
+                #dct = ast.literal_eval(payload)
+                
                 
                 
                        

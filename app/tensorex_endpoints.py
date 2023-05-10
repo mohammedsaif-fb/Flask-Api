@@ -1,4 +1,6 @@
 import mysql.connector
+import time
+import random
 # Set the path to the CA certificate file
 
 MYSQL_HOST = "db-mysql-lon1-10668-do-user-8714569-0.b.db.ondigitalocean.com"
@@ -20,8 +22,9 @@ def get_stack_height():
 
 # Do something with the connection
 # ...
+    '''
     cursor2 = connection2.cursor()
-
+    
     query = "SELECT FROM_UNIXTIME(timestamp) AS timestamp, stack_height, ambient_temp " \
         "FROM stack_height ORDER BY timestamp DESC" \
         #"WHERE timestamp >= UNIX_TIMESTAMP(NOW() - INTERVAL 20 MINUTE) ORDER BY timestamp DESC"
@@ -29,11 +32,10 @@ def get_stack_height():
     cursor2.execute(query)
 
     row = cursor2.fetchone()
-
-    timestamps = []
+    '''
     stack_heights = []
     temperatures = []
-
+    '''
     while row is not None:
         now = row[0]
         timestamp_ = int(now.timestamp()) - 3600
@@ -41,6 +43,18 @@ def get_stack_height():
         stack_heights.append(row[1])
         temperatures.append(row[2])
         row = cursor2.fetchone()
+    '''
+    # Get the current Unix timestamp
+    current_timestamp = int(time.time())
+
+# Generate a list of Unix timestamps for the last 5 minutes
+    timestamps = [current_timestamp - i for i in range(300, 0, -1)]
+
+    stack_heights = [random.randint(0, 350) for _ in range(len(timestamps))]
+
+    temperatures = [random.randint(10.5, 20.3) for _ in range(len(timestamps))]
+
+    
 
     result_json = {
         "timestamps": timestamps,
@@ -56,13 +70,15 @@ def get_stack_height():
         ]
     }
 # Close the cursor and connection
+    '''
     cursor2.close()
     connection2.close()
-
+    '''
     return result_json
 
 
 def get_battery_data():
+    '''
     connection2 = mysql.connector.connect(
         host=MYSQL_HOST,
         user=MYSQL_USER,
@@ -82,18 +98,26 @@ def get_battery_data():
     cursor2.execute(query)
 
     row = cursor2.fetchone()
-
+    '''
     timestamps = []
 
     battery_voltages = []
+    current_timestamp = int(time.time())
 
+# Generate a list of Unix timestamps for the last 5 minutes
+    timestamps = [current_timestamp - i for i in range(300, 0, -1)]
+
+    battery_voltages = [random.randint(28.3, 29.3) for _ in range(len(timestamps))]
+
+    
+    '''
     while row is not None:
         now = row[0]
         timestamp_ = int(now.timestamp()) - 3600
         timestamps.append(timestamp_)
         battery_voltages.append(row[1])
         row = cursor2.fetchone()
-
+    '''
     result_json = {
         "timestamps": timestamps,
         "dataseries": [
@@ -106,7 +130,8 @@ def get_battery_data():
         ]
     }
 # Close the cursor and connection
+    '''
     cursor2.close()
     connection2.close()
-
+    '''
     return result_json
