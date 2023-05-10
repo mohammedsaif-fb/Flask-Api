@@ -52,7 +52,7 @@ def get_stack_height():
 
     stack_heights = [random.randint(0, 350) for _ in range(len(timestamps))]
 
-    temperatures = [random.randint(10.5, 20.3) for _ in range(len(timestamps))]
+    temperatures = [random.randint(10, 20) for _ in range(len(timestamps))]
 
     
 
@@ -107,7 +107,7 @@ def get_battery_data():
 # Generate a list of Unix timestamps for the last 5 minutes
     timestamps = [current_timestamp - i for i in range(300, 0, -1)]
 
-    battery_voltages = [random.randint(28.3, 29.3) for _ in range(len(timestamps))]
+    battery_voltages = [random.randint(28, 29) for _ in range(len(timestamps))]
 
     
     '''
