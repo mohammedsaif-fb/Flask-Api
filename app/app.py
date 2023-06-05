@@ -1,4 +1,4 @@
-from urllib import request
+import requests
 from flask_cors import CORS
 from flask import Flask, jsonify
 from app.results import get_queries, get_stack_id
@@ -84,7 +84,7 @@ def home_kpi():
 
 @app.route('/stack_addition', methods=['POST'])
 def handle_addtion():
-    data = request.json
+    data = requests.json()
     request_id = save_stack_data(data)
     send_alerts(reciepents=email_list, message_content=data)
     response = {
