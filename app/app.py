@@ -1,3 +1,4 @@
+from urllib import request
 from flask_cors import CORS
 from flask import Flask, jsonify
 from app.results import get_queries, get_stack_id
