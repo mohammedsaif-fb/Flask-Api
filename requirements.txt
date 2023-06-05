@@ -21,3 +21,4 @@ zipp==3.12
 flask_sqlalchemy
 flask_swagger_ui
 mysql-connector
+requests
